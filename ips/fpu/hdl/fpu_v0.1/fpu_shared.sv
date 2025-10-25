@@ -32,7 +32,12 @@ import fpu_defs::*;
 
 module fpu_shared
   #(
-    parameter ADD_REGISTER = 1
+    parameter ADD_REGISTER = 1,
+    // Local parameters to fix undefined macros (C_TAG and C_FLAG were missing).
+    // C_TAG: Width for pipeline/operand tags (tunable for pipeline depth).
+    // C_FLAG: Width for FP exception flags (matches standard IEEE 754: 5 bits).
+    localparam C_TAG  = 4,
+    localparam C_FLAG = 5
     )
   (
    input logic     Clk_CI,

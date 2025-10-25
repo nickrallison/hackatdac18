@@ -22,3 +22,6 @@ python3 ./update-ips
 
 cat scripts/filelist.mk >> sim/vcompile/rtl/pulpissimo.mk
 cd sim
+make -f vcompile/rtl/pulpissimo.mk filelist
+cat pulpissimo.f
+yosys -p "verific -sv $(cat pulpissimo.f | grep -v '#' | tr '\n' ' ')"

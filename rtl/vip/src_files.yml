@@ -1,13 +1,14 @@
- S25FS256_model:
-   defines: [
-     SPEEDSIM,
-   ]
-   files: [
-     spi_flash/S25fs256s/model/s25fs256s.v,
-   ]
-   flags: [
-     skip_synthesis,
-   ]
+---
+S25FS256_model:
+  defines: [
+    SPEEDSIM,
+  ]
+  files: [
+    spi_flash/S25fs256s/model/s25fs256s.v,
+  ]
+  flags: [
+    skip_synthesis,
+  ]
 
 # 24FC1025_model:
 #   defines: [
@@ -41,4 +42,3 @@ open_models:
   flags: [
     skip_synthesis,
   ]
-

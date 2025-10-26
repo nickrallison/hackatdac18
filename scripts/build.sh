@@ -6,10 +6,6 @@ chmod +x update-ips
 chmod +x update-tests
 chmod +x generate-scripts
 
-if [ -d ips/pulp_soc ]; then
-  rm -rf ips/pulp_soc
-fi
-
 if [ ! -d venv ]; then
   python3 -m venv venv
   . venv/bin/activate

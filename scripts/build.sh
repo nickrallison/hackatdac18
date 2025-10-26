@@ -20,8 +20,6 @@ fi
 which python3
 python3 ./update-ips
 
-cat scripts/filelist.mk >> sim/vcompile/rtl/pulpissimo.mk
-cd sim
-make -f vcompile/rtl/pulpissimo.mk filelist
-cat pulpissimo.f
-yosys -p "verific -sv $(cat pulpissimo.f | grep -v '#' | tr '\n' ' ')"
+find . -name "*.*v" > filelist.f
+yosys -p "verific -vlog-incdir rtl/includes" \
+  -p "verific -sv $(cat filelist.f | grep -v '#' | tr '\n' ' ')"

@@ -17,30 +17,13 @@ if [ ! -d venv ]; then
 else
   . venv/bin/activate
 fi  
-which python3
-python3 ./update-ips
+python3 update-ips
+python3 generate-scripts
 
 if [ -f filelist.f ]; then
   rm filelist.f
   touch filelist.f
 fi
-
-# Step 1: Collect and prepend critical files FIRST (defines, packages, includes)
-# echo "rtl/includes/pulp_soc_defines.sv" >> filelist.f
-# echo "rtl/includes/soc_bus_defines.sv" >> filelist.f
-# echo "rtl/includes/periph_bus_defines.sv" >> filelist.f
-# echo "ips/pulp_soc/rtl/include/tcdm_macros.svh" >> filelist.f
-
-# # Add FPU packages explicitly before their users
-# echo "ips/fpu/hdl/fpu_v0.1/fpu_defs.sv" >> filelist.f
-# echo "ips/fpu/hdl/fpu_fmac/fpu_defs_fmac.sv" >> filelist.f
-# echo "ips/fpu/hdl/fpu_div_sqrt_tp_nlp/fpu_defs_div_sqrt_tp.sv" >> filelist.f
-
-# # Add ALL adv_dbg_if defines explicitly (to fix includes)
-# echo "ips/adv_dbg_if/rtl/adbg_defines.v" >> filelist.f
-# echo "ips/adv_dbg_if/rtl/adbg_axi_defines.v" >> filelist.f
-# echo "ips/adv_dbg_if/rtl/adbg_lint_defines.v" >> filelist.f  # <-- MISSING BEFORE; CRITICAL FOR lint_module.sv
-# echo "ips/axi/axi_node/defines.v" >> filelist.f
 
 find . -name "*defs*.*v" | sed 's|^\./||' | grep -v -E "(pulp_soc_defines\.sv|soc_bus_defines\.sv|periph_bus_defines\.sv|tcdm_macros\.svh|fpu_defs|adbg_defines\.v|adbg_lint_defines\.v|defines\.v)" | sort -u >> filelist.f
 find . -name "*define*.*v" | sed 's|^\./||' | grep -v -E "(pulp_soc_defines\.sv|soc_bus_defines\.sv|periph_bus_defines\.sv|tcdm_macros\.svh|fpu_defs|adbg_defines\.v|adbg_lint_defines\.v|defines\.v)" | sort -u >> filelist.f

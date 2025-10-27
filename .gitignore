@@ -1,3 +1,9 @@
 *.pyc
 sim/pulpissimo.f
 __pycache__/
+venv/
+.bender
+rtl/includes/soc_mem_map.svh
+filelist_temp.f
+.gitignore
+filelist.f

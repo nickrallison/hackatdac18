@@ -22,17 +22,6 @@ if [ ! -f rtl/includes/soc_mem_map.svh ]; then
   wget https://raw.githubusercontent.com/pulp-platform/pulpissimo/refs/heads/master/hw/includes/soc_mem_map.svh -O rtl/includes/soc_mem_map.svh
 fi
 
-# if [ ! -f rtl/includes/axi/typedef.svh ]; then
-#   mkdir -p rtl/includes/axi
-#   wget https://raw.githubusercontent.com/pulp-platform/axi/refs/heads/master/include/axi/typedef.svh -O rtl/includes/axi/typedef.svh
-# fi
-
-
-# if [ ! -f rtl/includes/axi/assign.svh ]; then
-#   mkdir -p rtl/includes/axi
-#   wget https://raw.githubusercontent.com/pulp-platform/axi/refs/heads/master/include/axi/assign.svh -O rtl/includes/axi/assign.svh
-# fi
-
 if [ ! -d venv ]; then
   python3 -m venv venv
   . venv/bin/activate
@@ -62,14 +51,13 @@ echo "+incdir+ips/adv_dbg_if/rtl"  >> filelist.f
 echo "+incdir+ips/udma/rtl"  >> filelist.f
 echo "+incdir+ips/apb"  >> filelist.f
 
-includes=$(find . -name assign.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
-echo "$includes" >> filelist.f
-
-includes=$(find . -name assertions.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
-echo "$includes" >> filelist.f
-
-# includes=$(find . -name ibex_asm_program_gen.sv | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
+# includes=$(find . -name assign.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
 # echo "$includes" >> filelist.f
+
+# includes=$(find . -name assertions.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
+# echo "$includes" >> filelist.f
+
+cat ips/pulp_soc/pulp_soc_filelist.f
 
 find . -name "*.svh" | sed 's|^\./||' >> filelist.f
 find . -name "*defs*.*v" | sed 's|^\./||' >> filelist.f

@@ -6,6 +6,15 @@ chmod +x update-ips
 chmod +x update-tests
 chmod +x generate-scripts
 
+if [ ! -d ips/pulp_soc/.git ]; then
+  rm -rf ips/pulp_soc
+  git clone --recurse-submodules https://github.com/pulp-platform/pulp_soc ips/pulp_soc
+fi
+
+if [ ! -f rtl/includes/soc_mem_map.svh ]; then
+  wget https://raw.githubusercontent.com/pulp-platform/pulpissimo/refs/heads/master/hw/includes/soc_mem_map.svh -O rtl/includes/soc_mem_map.svh
+fi
+
 if [ ! -d venv ]; then
   python3 -m venv venv
   . venv/bin/activate
@@ -14,7 +23,7 @@ else
   . venv/bin/activate
 fi  
 python3 update-ips
-python3 generate-scripts
+# python3 generate-scripts
 
 if [ -f filelist.f ]; then
   rm filelist.f

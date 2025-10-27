@@ -62,18 +62,26 @@ echo "+incdir+ips/adv_dbg_if/rtl"  >> filelist.f
 echo "+incdir+ips/udma/rtl"  >> filelist.f
 echo "+incdir+ips/apb"  >> filelist.f
 
-includes=$(find . -name assign.svh | xargs -I % dirname % | xargs -I % dirname % | printf +incdir+)
+includes=$(find . -name assign.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
+echo "$includes" >> filelist.f
 
+includes=$(find . -name assertions.svh | xargs -I % dirname % | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
+echo "$includes" >> filelist.f
 
-find . -name "*.svh" | \
-  grep -v "tb_" | \
-  grep -v "formal" | \
-  grep -v "cov" | \
-  grep -v "" | \
-  sed 's|^\./||' >> filelist.f
+# includes=$(find . -name ibex_asm_program_gen.sv | xargs -I % dirname % | sed 's|^\./||; s/^/+incdir+/')
+# echo "$includes" >> filelist.f
+
+find . -name "*.svh" | sed 's|^\./||' >> filelist.f
 find . -name "*defs*.*v" | sed 's|^\./||' >> filelist.f
 find . -name "*define*.*v" | sed 's|^\./||' >> filelist.f
 find . -name "*macro*.*v" | sed 's|^\./||' >> filelist.f
+
+cat filelist.f | \
+  grep -v "tb_" | \
+  grep -v "formal" | \
+  grep -v "cov" | \
+  grep -v "prim_util" \
+  > filelist_temp.f
 
 # Step 2: Generate the rest (include TB files for now; exclude if synthesis-only)
 find . -name "*.*v" | grep -v '.git' | grep -v ".venv" | grep -v "tb_" | sed 's|^\./||' | sort -u >> filelist.f
@@ -105,6 +113,6 @@ yosys -p "verific -set-warning VERI-1245" \
       -p "verific -vlog-define SLVERR=2'b10" \
       -p "verific -vlog-define OKAY=2'b00" \
       -p "verific -vlog-define NB_CORES=8" \
-      -p "verific -f -sv filelist.f"
+      -p "verific -f -sv filelist_temp.f"
 
       # -p "verific -f -sv ips/pulp_soc/pulp_soc_filelist.f" \
